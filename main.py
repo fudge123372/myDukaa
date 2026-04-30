@@ -1,11 +1,11 @@
-from flask import Flask,render_template,request,redirect,url_for
+from flask import Flask,render_template,request,redirect,url_for,flash
 from database import get_products,get_sales,get_stock,insert_products,insert_sales,insert_stock
 
 #creating a Flask instance
 app = Flask(__name__)
 
-
-@app.route('/') 
+app.secret_key = "dn320if"
+@app.route('/')
 def home():
     return render_template('index.html')
 
@@ -24,7 +24,7 @@ def add_product():
         selling_price = request.form['s_price']
         new_product = (product_name,buying_price,selling_price)
         insert_products(new_product)
-        print("Product added successfully")
+        flash("Product added successfully")
     return redirect(url_for('products'))
 
 
@@ -40,7 +40,7 @@ def add_sale():
         quantity = request.form['quantity']
         new_sale = (product_id,quantity)
         insert_sales(new_sale)
-        print("Sale made successfully")
+        flash("Sale made successfully")
     return redirect(url_for('sales'))
 
 @app.route('/stock')
@@ -55,7 +55,7 @@ def add_stock():
         stock_quantity = request.form['s_quantity']
         new_stock = (product_id,stock_quantity)
         insert_stock(new_stock)
-        print("Stock added successfully")
+        flash("Stock added successfully")
     return redirect(url_for('stock'))
 
 @app.route('/dashboard')
